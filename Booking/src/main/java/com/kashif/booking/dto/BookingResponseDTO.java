@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
-public class BookingDTO {
+public class BookingResponseDTO {
 	
 	private int bookingId;
 	private Date fromDate;
@@ -13,7 +13,7 @@ public class BookingDTO {
 	private List<String> roomNumbers;
 	private int roomPrice;
 	private int transactionId;
-	private Date bookedOn;
+	private LocalDate bookedOn;
 	
 	
 	public int getBookingId() {
@@ -58,11 +58,11 @@ public class BookingDTO {
 	public void setTransactionId(int transactionId) {
 		this.transactionId = transactionId;
 	}
-	public Date getBookedOn() {
+	public LocalDate getBookedOn() {
 		return bookedOn;
 	}
-	public void setBookedOn(Date bookedOn) {
-		this.bookedOn = bookedOn;
+	public void setBookedOn(LocalDate localDate) {
+		this.bookedOn = localDate;
 	}
 	
 	

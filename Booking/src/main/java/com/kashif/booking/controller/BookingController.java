@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kashif.booking.dto.BookingDTO;
+import com.kashif.booking.dto.BookingRequestDTO;
+import com.kashif.booking.dto.BookingResponseDTO;
 import com.kashif.booking.entity.BookingInfoEntity;
 import com.kashif.booking.service.BookingService;
+import com.kashif.booking.utils.POJOConverter;
 
 @RestController
 @RequestMapping(value = "/payment/v1")
@@ -25,12 +28,12 @@ public class BookingController {
 	private ModelMapper modelMapper;
 	
 	@PostMapping(value = "/addBooking" ,consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<BookingDTO> saveBooking(@RequestBody BookingDTO bookingDTO){
-		BookingInfoEntity booking = modelMapper.map(bookingDTO, BookingInfoEntity.class);
+	public ResponseEntity<BookingResponseDTO> saveBooking(@RequestBody BookingRequestDTO bookingDTO){
+		BookingInfoEntity booking = POJOConverter.convertBookingToEntity(bookingDTO);
 		BookingInfoEntity savedUser = bookingService.createBooking(booking);
 		if(savedUser !=null) {
-			BookingDTO responseBookingDTO = modelMapper.map(savedUser, BookingDTO.class);
-			return new ResponseEntity<BookingDTO>(responseBookingDTO , HttpStatus.CREATED);
+			BookingResponseDTO responseBookingDTO = POJOConverter.convertEntityToDTO(savedUser);
+			return new ResponseEntity<BookingResponseDTO>(responseBookingDTO , HttpStatus.CREATED);
 		}
 		return null;
 	}

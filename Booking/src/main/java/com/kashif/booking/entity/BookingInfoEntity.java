@@ -2,19 +2,25 @@ package com.kashif.booking.entity;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 @Entity
 public class BookingInfoEntity {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "booking_id")
 	private int bookingId;
 	
 	@Column
@@ -27,11 +33,7 @@ public class BookingInfoEntity {
 	private String adhaarNo;
 	
 	@Column
-	private int noOfRooms;
-	
-	@Column
-	private String roomNumbers;
-	
+	private int numOfRooms;
 	@Column(nullable = false)
 	private int roomPrice;
 	
@@ -40,6 +42,11 @@ public class BookingInfoEntity {
 	
 	@Column
 	private LocalDate bookedOn;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "book_room_id", referencedColumnName = "booking_id")
+	private Collection<RoomInfoEntity> roomInfo = new ArrayList<RoomInfoEntity>();
+	
 
 	public int getBookingId() {
 		return bookingId;
@@ -74,21 +81,12 @@ public class BookingInfoEntity {
 	}
 
 	public int getNoOfRooms() {
-		return noOfRooms;
+		return numOfRooms;
 	}
 
 	public void setNoOfRooms(int noOfRooms) {
-		this.noOfRooms = noOfRooms;
+		this.numOfRooms = noOfRooms;
 	}
-
-	public String getRoomNumbers() {
-		return roomNumbers;
-	}
-
-	public void setRoomNumbers(String roomNumbers) {
-		this.roomNumbers = roomNumbers;
-	}
-
 	public int getRoomPrice() {
 		return roomPrice;
 	}
@@ -109,9 +107,24 @@ public class BookingInfoEntity {
 		return bookedOn;
 	}
 
-	public void setBookedOn(LocalDate bookedOn) {
-		this.bookedOn = bookedOn;
+	public void setBookedOn(LocalDate localDate) {
+		this.bookedOn = localDate;
 	}
-	
+
+	public int getNumOfRooms() {
+		return numOfRooms;
+	}
+
+	public void setNumOfRooms(int numOfRooms) {
+		this.numOfRooms = numOfRooms;
+	}
+
+	public Collection<RoomInfoEntity> getRoomInfo() {
+		return roomInfo;
+	}
+
+	public void setRoomInfo(List<RoomInfoEntity> roomInfo) {
+		this.roomInfo = roomInfo;
+	}
 	
 }
