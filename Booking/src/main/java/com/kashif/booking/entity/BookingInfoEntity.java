@@ -2,6 +2,7 @@ package com.kashif.booking.entity;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,10 +25,10 @@ public class BookingInfoEntity {
 	private int bookingId;
 	
 	@Column
-	private Date fromDate;
+	private LocalDate fromDate;
 	
 	@Column
-	private Date toDate;
+	private LocalDate toDate;
 	
 	@Column
 	private String adhaarNo;
@@ -41,7 +42,7 @@ public class BookingInfoEntity {
 	private int transactionId;
 	
 	@Column
-	private LocalDate bookedOn;
+	private LocalDateTime bookedOn;
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "book_room_id", referencedColumnName = "booking_id")
@@ -56,19 +57,19 @@ public class BookingInfoEntity {
 		this.bookingId = bookingId;
 	}
 
-	public Date getFromDate() {
+	public LocalDate getFromDate() {
 		return fromDate;
 	}
 
-	public void setFromDate(Date fromDate) {
+	public void setFromDate(LocalDate fromDate) {
 		this.fromDate = fromDate;
 	}
 
-	public Date getToDate() {
+	public LocalDate getToDate() {
 		return toDate;
 	}
 
-	public void setToDate(Date toDate) {
+	public void setToDate(LocalDate toDate) {
 		this.toDate = toDate;
 	}
 
@@ -103,11 +104,11 @@ public class BookingInfoEntity {
 		this.transactionId = transactionId;
 	}
 
-	public LocalDate getBookedOn() {
+	public LocalDateTime getBookedOn() {
 		return bookedOn;
 	}
 
-	public void setBookedOn(LocalDate localDate) {
+	public void setBookedOn(LocalDateTime localDate) {
 		this.bookedOn = localDate;
 	}
 

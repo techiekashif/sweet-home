@@ -2,18 +2,19 @@ package com.kashif.booking.dto;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class BookingResponseDTO {
 	
 	private int bookingId;
-	private Date fromDate;
-	private Date toDate;
+	private LocalDate fromDate;
+	private LocalDate toDate;
 	private String adhaarNo;
 	private List<String> roomNumbers;
 	private int roomPrice;
 	private int transactionId;
-	private LocalDate bookedOn;
+	private LocalDateTime bookedOn;
 	
 	
 	public int getBookingId() {
@@ -22,16 +23,16 @@ public class BookingResponseDTO {
 	public void setBookingId(int bookingId) {
 		this.bookingId = bookingId;
 	}
-	public Date getFromDate() {
+	public LocalDate getFromDate() {
 		return fromDate;
 	}
-	public void setFromDate(Date fromDate) {
+	public void setFromDate(LocalDate fromDate) {
 		this.fromDate = fromDate;
 	}
-	public Date getToDate() {
+	public LocalDate getToDate() {
 		return toDate;
 	}
-	public void setToDate(Date toDate) {
+	public void setToDate(LocalDate toDate) {
 		this.toDate = toDate;
 	}
 	public String getAdhaarNo() {
@@ -58,10 +59,10 @@ public class BookingResponseDTO {
 	public void setTransactionId(int transactionId) {
 		this.transactionId = transactionId;
 	}
-	public LocalDate getBookedOn() {
+	public LocalDateTime getBookedOn() {
 		return bookedOn;
 	}
-	public void setBookedOn(LocalDate localDate) {
+	public void setBookedOn(LocalDateTime localDate) {
 		this.bookedOn = localDate;
 	}
 	

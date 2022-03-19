@@ -19,6 +19,6 @@ public class PaymentServiceImpl implements PaymentsService{
 
 	@Override
 	public TransactionDetailsEntity getTransactionDetails(int id) {
-		return transactionRepository.getById(id);
+		return transactionRepository.findById(id).orElse(null);
 	}
 }

@@ -1,13 +1,13 @@
 package com.kashif.booking.service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -25,10 +25,10 @@ public class BookingServiceImpl implements BookingService {
 	private BookingRepository bookingRepository;
 
 	@Autowired
-	private RoomRepository roomRepository;
-	
-	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Value("${payment.transaction.endpoint}")
+	private String url;
 
 	@Override
 	public BookingInfoEntity createBooking(BookingInfoEntity bookingInfo) {
@@ -45,12 +45,12 @@ public class BookingServiceImpl implements BookingService {
 		}
 		int roomPrice = calculateRoomPrice(bookingInfoEntity);
 		bookingInfoEntity.setRoomPrice(roomPrice);
-		bookingInfoEntity.setBookedOn(LocalDate.now());
+		bookingInfoEntity.setBookedOn(LocalDateTime.now());
 	}
 
 	private int calculateRoomPrice(BookingInfoEntity bookingInfoEntity) {
 		int noOfRooms = bookingInfoEntity.getNoOfRooms();
-		int days = bookingInfoEntity.getToDate().getDate() - bookingInfoEntity.getFromDate().getDate();
+		int days = (int) ChronoUnit.DAYS.between(bookingInfoEntity.getFromDate(), bookingInfoEntity.getToDate());
 		return (1000 * days * noOfRooms);
 	}
 
@@ -78,7 +78,6 @@ public class BookingServiceImpl implements BookingService {
 	@Override
 	public BookingInfoEntity getBookingDetails(BookingInfoEntity bookingInfo, PaymentDTO paymentDTO) {
 		
-		String url = "http://localhost:8083/payment/transaction";
 		ResponseEntity<Integer> transactionNo = restTemplate.postForEntity(url, paymentDTO, Integer.class);
 		bookingInfo.setTransactionId(transactionNo.getBody());
 		return bookingRepository.save(bookingInfo);

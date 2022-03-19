@@ -1,24 +1,24 @@
 package com.kashif.booking.dto;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class BookingRequestDTO {
 	
-	private Date fromDate;
-	private Date toDate;
+	private LocalDate fromDate;
+	private LocalDate toDate;
 	private String adhaarNo;
 	private int numOfRooms;
 	
-	public Date getFromDate() {
+	public LocalDate getFromDate() {
 		return fromDate;
 	}
-	public void setFromDate(Date fromDate) {
+	public void setFromDate(LocalDate fromDate) {
 		this.fromDate = fromDate;
 	}
-	public Date getToDate() {
+	public LocalDate getToDate() {
 		return toDate;
 	}
-	public void setToDate(Date toDate) {
+	public void setToDate(LocalDate toDate) {
 		this.toDate = toDate;
 	}
 	public String getAdhaarNo() {
