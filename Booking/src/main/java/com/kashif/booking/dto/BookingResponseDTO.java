@@ -65,6 +65,10 @@ public class BookingResponseDTO {
 	public void setBookedOn(LocalDateTime localDate) {
 		this.bookedOn = localDate;
 	}
-	
-	
+	@Override
+	public String toString() {
+		return "[bookingId=" + bookingId + ", fromDate=" + fromDate + ", toDate=" + toDate
+				+ ", adhaarNo=" + adhaarNo + ", roomNumbers=" + roomNumbers + ", roomPrice=" + roomPrice
+				+ ", transactionId=" + transactionId + ", bookedOn=" + bookedOn + "]";
+	}
 }
