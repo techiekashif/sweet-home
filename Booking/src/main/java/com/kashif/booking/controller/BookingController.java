@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.collect.Lists;
 import com.kashif.booking.dto.BookingRequestDTO;
 import com.kashif.booking.dto.BookingResponseDTO;
 import com.kashif.booking.dto.PaymentDTO;
@@ -18,7 +19,7 @@ import com.kashif.booking.service.BookingService;
 import com.kashif.booking.utils.POJOConverter;
 
 @RestController
-@RequestMapping(value = "/hotel/")
+@RequestMapping(value = "/hotel")
 public class BookingController {
 	
 	@Autowired
@@ -36,11 +37,17 @@ public class BookingController {
 	}
 	
 	@PostMapping(value = "booking/{bookingId}/transaction", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PaymentDTO> getPaymentInfo(@RequestBody PaymentDTO paymentDTO, @PathVariable("bookingId") int bookingId){
+	public ResponseEntity getPaymentInfo(@RequestBody PaymentDTO paymentDTO, @PathVariable("bookingId") int bookingId){
+		if (!Lists.newArrayList("CARD", "UPI").contains(paymentDTO.getPaymentMode())) {
+			return new ResponseEntity("Invalid mode of payment", HttpStatus.BAD_REQUEST);
+		}
+		BookingInfoEntity bookingInfo = bookingService.getBookingDetails(bookingId);
+		if (bookingInfo == null) {
+			return new ResponseEntity("Invalid booking id", HttpStatus.BAD_REQUEST);
+		}
+		BookingInfoEntity bookingInfoWithTransStatus = bookingService.getBookingDetails(bookingInfo, paymentDTO);
 		System.out.println(bookingId);
-		return null;
-		
-		
+		BookingResponseDTO bookingInfoResponse = POJOConverter.convertEntityToDTO(bookingInfoWithTransStatus);
+		return new ResponseEntity(bookingInfoResponse, HttpStatus.OK);
 	}
-
 }

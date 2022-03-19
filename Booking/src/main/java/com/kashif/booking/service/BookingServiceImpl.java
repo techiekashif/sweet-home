@@ -5,9 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.persistence.EntityNotFoundException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.kashif.booking.dto.PaymentDTO;
 import com.kashif.booking.entity.BookingInfoEntity;
 import com.kashif.booking.entity.RoomInfoEntity;
 import com.kashif.booking.repository.BookingRepository;
@@ -21,6 +26,9 @@ public class BookingServiceImpl implements BookingService {
 
 	@Autowired
 	private RoomRepository roomRepository;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 
 	@Override
 	public BookingInfoEntity createBooking(BookingInfoEntity bookingInfo) {
@@ -31,7 +39,6 @@ public class BookingServiceImpl implements BookingService {
 
 	private void populateRoomParameters(BookingInfoEntity bookingInfoEntity) {
 
-		int noOfRooms = bookingInfoEntity.getNoOfRooms();
 		List<String> rooms = generateRooms(bookingInfoEntity.getNoOfRooms());
 		for( String roomNo : rooms) {
 			bookingInfoEntity.getRoomInfo().add(new RoomInfoEntity(roomNo));
@@ -57,4 +64,23 @@ public class BookingServiceImpl implements BookingService {
 		return numberList;
 	}
 
+	@Override
+	public BookingInfoEntity getBookingDetails(int bookingId) {
+		try {
+			BookingInfoEntity bookingInfo = bookingRepository.findById(bookingId).orElse(null);
+			return bookingInfo;
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+	}
+
+	@Override
+	public BookingInfoEntity getBookingDetails(BookingInfoEntity bookingInfo, PaymentDTO paymentDTO) {
+		
+		String url = "http://localhost:8083/payment/transaction";
+		ResponseEntity<Integer> transactionNo = restTemplate.postForEntity(url, paymentDTO, Integer.class);
+		bookingInfo.setTransactionId(transactionNo.getBody());
+		return bookingRepository.save(bookingInfo);
+	}
 }

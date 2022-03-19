@@ -23,7 +23,7 @@ public class PaymentsController {
 	@Autowired
 	private PaymentsService paymentsService;
 
-	@PostMapping(value = "/transaction", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "transaction", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> getTransactionID(@RequestBody PaymentDTO paymmentDTO) {
 		TransactionDetailsEntity transaction = POJOConverter.convertTransactionDTOToEntity(paymmentDTO);
 		int transactionId = paymentsService.saveTransaction(transaction).getId();
